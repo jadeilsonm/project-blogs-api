@@ -29,7 +29,7 @@ const PostsCategorySchema = (sequelize, DataTypes) => {
       as: 'categoryId',
     });
   };
-  return PostsCategoryTable
+  return PostsCategoryTable;
 };
 
 module.exports = PostsCategorySchema;
