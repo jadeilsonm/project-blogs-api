@@ -1,8 +1,9 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
-const validationUserMiddleware = require('../middlewares/validateUserMidlewares');
+const validationUserMiddleware = require('../middlewares/validateUserMiddleware');
 const { authentication } = require('../services/token.services');
-const { createdUser } = require('../services/user.services');
+const { createdUser, getAllUser } = require('../services/user.services');
+const validateTokenMiddleware = require('../middlewares/validateTokenMiddleware');
 
 const userRouter = Router();
 
@@ -16,6 +17,16 @@ userRouter.post(
       const token = await authentication({ email, password });
       res.status(201).json(token);
     }
+  }),
+);
+
+userRouter.use(rescue(validateTokenMiddleware));
+
+userRouter.get(
+  '/',
+  rescue(async (_req, res) => {
+    const response = await getAllUser();
+    res.status(200).json(response);
   }),
 );
 

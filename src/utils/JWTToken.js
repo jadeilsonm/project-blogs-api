@@ -9,18 +9,21 @@ const jwtConfig = {
 
 const generateJWTToken = (payload) => jwt.sign(payload, SECRET, jwtConfig);
 
-const authenticateToken = async (__token) => {
-  // if (!token) {
-  //   throw { status: 401, message: 'Sem Token' };
-  // }
-
-  // try {
-  //   const introspection = await jwt.verify(token, SECRET, jwtConfig);
-  //   return introspection;
-  // } catch (e) {
-  //   console.log('error', e.message);
-  //   throw { status: 401, message: 'token inválido' };
-  // }
+const authenticateToken = async (token) => {
+  console.log('jwt');
+  if (!token) {
+    const message = { status: 401, message: 'Token not found' };
+    throw message;
+  }
+  try {
+    const introspection = await jwt.verify(token, SECRET, jwtConfig);
+    console.log(introspection);
+    return introspection;
+  } catch (e) {
+    console.log('error', e.message);
+    const message = { status: 401, message: 'Expired or invalid token' };
+    throw message;
+  }
 };
 
 module.exports = {
