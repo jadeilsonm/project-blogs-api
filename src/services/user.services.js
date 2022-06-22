@@ -13,12 +13,25 @@ const createdUser = async (user) => {
   return User.create(user);
 };
 
-const getAllUser = async () =>
+const getAllUser = () =>
   User.findAll({
     attributes: ['displayName', 'email', 'image'],
   });
 
+const getOneUser = async (id) => {
+  const user = await User.findOne({
+    attributes: ['id', 'displayName', 'email', 'image'],
+    where: { id },
+  });
+  if (!user) {
+    const message = { status: 404, message: 'User does not exist' };
+    throw message;
+  }
+  return user;
+};
+
 module.exports = {
   createdUser,
   getAllUser,
+  getOneUser,
 };

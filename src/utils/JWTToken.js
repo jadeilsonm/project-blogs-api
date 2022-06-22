@@ -10,7 +10,6 @@ const jwtConfig = {
 const generateJWTToken = (payload) => jwt.sign(payload, SECRET, jwtConfig);
 
 const authenticateToken = async (token) => {
-  console.log('jwt');
   if (!token) {
     const message = { status: 401, message: 'Token not found' };
     throw message;
