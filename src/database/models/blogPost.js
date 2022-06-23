@@ -1,15 +1,22 @@
 const BlogPostSchema = (sequelize, DataTypes) => {
-  const BlogPostTable = sequelize.define('BlogPost', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
+  const BlogPostTable = sequelize.define(
+    'BlogPost',
+    {
+      id: {
+        autoIncrement: true,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+      },
+      title: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
+      content: DataTypes.STRING,
+      published: DataTypes.DATE,
+      updated: DataTypes.DATE,
     },
-    title: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
-    content: DataTypes.STRING,
-    published: DataTypes.DATE,
-    updated: DataTypes.DATE,
-  });
+    {
+      timestamps: false,
+    }
+  );
 
   BlogPostTable.associate = (models) => {
     BlogPostTable.belongsTo(models.User, { foreignKey: 'userId', as: 'users' });
