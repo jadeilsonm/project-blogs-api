@@ -70,9 +70,23 @@ const getOnePost = async (id) => {
   }
   return payload;
 };
+
+const updatePost = async (userId, id, payload) => {
+  if (!payload.title || !payload.content) {
+    const message = { status: 400, message: 'Some required fields are missing' };
+    throw message;
+  }
+  const [qtdUpdated] = await post.update(payload, { where: { userId: userId.id, id } });
+  if (qtdUpdated === 0) {
+    const message = { status: 401, message: 'Unauthorized user' };
+    throw message;
+  }
+  return getOnePost(id);
+};
   
 module.exports = {
   createdPost,
   getAllPost,
   getOnePost,
+  updatePost,
 };

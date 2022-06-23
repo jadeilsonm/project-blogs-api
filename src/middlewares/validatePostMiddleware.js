@@ -1,17 +1,13 @@
 const Joi = require('joi');
 
 const postDTO = Joi.object({
-  title: Joi.string().allow(''),
-  content: Joi.string().allow(''),
-  categoryIds: Joi.array().items(Joi.number().allow(null)),
+  title: Joi.string().allow('').required(),
+  content: Joi.string().allow('').required(),
+  categoryIds: Joi.array().items(Joi.number().allow(null)).optional(null),
 }).messages({
   'any.allow': 'Some required fields are missing',
-  'any.match': 'Some required fields are missing',
-  'any.categoryIds': '{{#label}} length must be at least 8 characters long',
-  'any.categoryIds.contain': '{{#label}} length must be at least 8 characters long ee',
-  'any.categoryIds.has': '{{#label}} length must be at least 8 characters long we',
-  'any.categoryIds.allow': '{{#label}} length must be at least 8 characters long aa',
-  'any.categoryIds.match': '{{#label}} length must be at least 8 characters long dd',
+  'any.required': 'Some required fields are missing',
+  'any.categoryIds.optional': '{{#label}} length must be at least 8 characters long aa',
 });
 
 const validatePost = (req, __res, next) => {

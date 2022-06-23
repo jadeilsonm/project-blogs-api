@@ -5,7 +5,6 @@ const createdUser = async (user) => {
     attributes: ['id', 'displayName', 'email', 'password', 'image'],
     where: { email: user.email },
   });
-  console.log('findUser', findUser);
   if (findUser) {
     const message = { status: 409, message: 'User already registered' };
     throw message;
