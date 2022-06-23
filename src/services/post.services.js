@@ -1,5 +1,10 @@
 const Sequelize = require('sequelize');
-const { BlogPost: post, Category, PostCategory } = require('../database/models');
+const {
+  BlogPost: post,
+  Category,
+  User,
+  PostCategory,
+} = require('../database/models');
 const config = require('../database/config/config');
 
 const sequelize = new Sequelize(config.development);
@@ -8,7 +13,10 @@ const isExistCategory = async (categoryIds) => {
   const payload = await Category.findAll({ attributes: ['id', 'name'] });
   const allCategory = payload.map((el) => el.id);
   if (categoryIds.length === 0) {
-    const message = { status: 400, message: 'Some required fields are missing' };
+    const message = {
+      status: 400,
+      message: 'Some required fields are missing',
+    };
     throw message;
   }
   const isCategory = categoryIds.some((e) => allCategory.includes(e));
@@ -28,19 +36,24 @@ const createdPost = async ({ title, content, categoryIds }, userId) => {
       await PostCategory.bulkCreate(newPostCategory, { transaction: t });
       return payload;
     });
-    console.log('\n\n\nresult ======', result);
     return result;
   } catch (error) {
     console.log(error);
   }
 };
 
-const getAllCategory = () =>
+const getAllPost = () =>
   post.findAll({
-    attributes: ['id', 'name'],
+    include: [
+      { model: User, 
+        as: 'user', 
+        attributes: ['id', 'displayName', 'email', 'image'],
+      },
+      { model: Category, as: 'categories' },
+    ],
   });
 
 module.exports = {
   createdPost,
-  getAllCategory,
+  getAllPost,
 };
