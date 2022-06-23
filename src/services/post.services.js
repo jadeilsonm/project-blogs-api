@@ -53,7 +53,26 @@ const getAllPost = () =>
     ],
   });
 
+const getOnePost = async (id) => {
+  const payload = await post.findOne({
+    include: [
+      { model: User, 
+        as: 'user', 
+        attributes: ['id', 'displayName', 'email', 'image'],
+      },
+      { model: Category, as: 'categories' },
+    ],
+    where: { id },
+  });
+  if (!payload) {
+    const message = { status: 404, message: 'Post does not exist' };
+    throw message;
+  }
+  return payload;
+};
+  
 module.exports = {
   createdPost,
   getAllPost,
+  getOnePost,
 };

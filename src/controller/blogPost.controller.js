@@ -2,7 +2,7 @@ const { Router } = require('express');
 const rescue = require('express-rescue');
 const validatePostMiddleware = require('../middlewares/validatePostMiddleware');
 const validateTokenMiddleware = require('../middlewares/validateTokenMiddleware');
-const { createdPost, getAllPost } = require('../services/post.services');
+const { createdPost, getAllPost, getOnePost } = require('../services/post.services');
 
 const postRouter = Router();
 
@@ -18,8 +18,17 @@ postRouter.post(
 
 postRouter.get(
   '/',
-  rescue(async (req, res) => {
+  rescue(async (__req, res) => {
     const payload = await getAllPost();
+    res.status(200).json(payload);
+  }),
+);
+
+postRouter.get(
+  '/:id',
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const payload = await getOnePost(id);
     res.status(200).json(payload);
   }),
 );
