@@ -1,8 +1,8 @@
 const Joi = require('joi');
 
 const postDTO = Joi.object({
-  title: Joi.string().allow('').required(),
-  content: Joi.string().allow('').required(),
+  title: Joi.string().allow(''),
+  content: Joi.string().allow(''),
   categoryIds: Joi.array().items(Joi.number().allow(null)).optional(null),
 }).messages({
   'any.allow': 'Some required fields are missing',
